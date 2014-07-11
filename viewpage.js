@@ -14,7 +14,7 @@ void function ($) {
 	};
 	Viewpage.DEFAULT = {
 		pages: '> *',
-		initPage: 1,
+		initPage: 0,
 		activeClass: 'active',
 		swipeRange: 35
 	};
@@ -39,6 +39,7 @@ void function ($) {
 	Viewpage.prototype._bind = function () {
 		var $pages = this.$pages;
 		$pages.on('touchstart', $.proxy(this._start, this));
+		$pages.on('touchmove', $.proxy(this._move, this);
 		$pages.on('touchend', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
@@ -47,6 +48,9 @@ void function ($) {
 	Viewpage.prototype._start = function (e) {
 		e = e.touches[0];
 		this.x = e.pageX;
+	};
+	Viewpage.prototype._move = function	(e) {
+		return false;
 	};
 	Viewpage.prototype._end = function (e) {
 		e = e.changedTouches[0];
