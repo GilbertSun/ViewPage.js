@@ -42,7 +42,6 @@ void function ($) {
 		$pages.on('touchmove', $.proxy(this._move, this));
 		$pages.on('touchend', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
-		$pages.on('touchcancel', $.proxy(this._end, this));
 	};
 
 	Viewpage.prototype._start = function (e) {
