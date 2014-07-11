@@ -1,6 +1,7 @@
 {
 	"browser": true,
 	"jquery": true,
+	"strict": true,
 	"es3": true,
 	"quotmark": "single",
 	"trailing": true,
