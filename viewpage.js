@@ -14,31 +14,27 @@ void function ($) {
 	};
 	Viewpage.DEFAULT = {
 		pages: '> *',
-		initPage: 0,
+		initPage: 1,
 		activeClass: 'active',
 		swipeRange: 35
 	};
 	Viewpage.prototype.prev = function () {
 		var now = this.now;
-		var prev = now - 1;
+		if (now === 0) return;
 
-		if (prev < 0) return;
-
-		this.now = prev;
-		var $pages = this.$pages;
-		var $nowPage = $pages.eq(now).removeClass('active');
-		var $next = $pages.eq(prev).removeClass('left').addClass('active');
+		this.go(now - 1);
 	};
 	Viewpage.prototype.next = function () {
 		var now = this.now;
-		var next = now + 1;
+		if (now === this.$pages.length -1) return;
 
-		if (next > this.$pages.length - 1) return;
+		this.go(now + 1);
+	};
+	Viewpage.prototype.go = function (index, withoutAnimation) {
+		var activeClass = this.options.activeClass;
+		this.now = index;
 
-		this.now = next;
-		var $pages = this.$pages;
-		var $nowPage = $pages.eq(now).addClass('left');
-		var $next = $pages.eq(next).addClass('active');
+		this.$pages.removeClass(activeClass).eq(index).addClass(activeClass);
 	};
 	Viewpage.prototype._bind = function () {
 		var $pages = this.$pages;
