@@ -13,8 +13,11 @@ void function ($) {
 		var $container = this.$container = $(options.container, $viewpage);
 		var $pages = this.$pages = $(options.pages, $container);
 
+		this.now = options.initPage;
+		this.x = 0;
 		this._setWidth(options.width);
 		this._initStyle();
+		this._bindEvent();
 	};
 	Viewpage.DEFAULT = {
 		width: '100%', // 1. percentage string 2. number > 0
@@ -49,34 +52,44 @@ void function ($) {
 
 		this.go(now + 1);
 	};
+	Viewpage.prototype.reset = function () {
+		this.go(this.now);
+	};
 	Viewpage.prototype.go = function (index, withoutAnimation) {
 		var activeClass = this.options.activeClass;
 		this.now = index;
+		this.$container.css('transform', 'translate(-' + index * this.width + 'px)')
 
-		this.$pages.removeClass(activeClass).eq(index).addClass(activeClass);
 	};
-	Viewpage.prototype._bind = function () {
-		var $pages = this.$pages;
-		$pages.on('touchstart', $.proxy(this._start, this));
-		$pages.on('touchmove', $.proxy(this._move, this));
-		$pages.on('touchend', $.proxy(this._end, this));
-		$pages.on('touchcancel', $.proxy(this._end, this));
+	Viewpage.prototype._bindEvent = function () {
+		this.$viewpage
+			.on('touchstart', $.proxy(this._start, this))
+			.on('touchmove', $.proxy(this._move, this))
+			.on('touchend', $.proxy(this._end, this))
+			.on('touchcancel', $.proxy(this._end, this));
 	};
 
 	Viewpage.prototype._start = function (e) {
 		e = e.touches[0];
-		this.x = e.pageX;
+		this.$container.css('transition', '0ms');
+		this.startX = e.pageX;
 	};
 	Viewpage.prototype._move = function	(e) {
+		e = e.touches[0];
+		var range = this.startX - e.pageX;
+		this.$container.css('transform', 'translate(-' + (this.now * this.width + range) + 'px)');
 		return false;
 	};
 	Viewpage.prototype._end = function (e) {
 		e = e.changedTouches[0];
-		this.range = e.pageX - this.x;
-		if (this.range > 35)
-			this.prev();
-		else if (this.range < -35)
-			this.next();
+		var range = e.pageX - this.startX;
+		this.$container.css('transition', '300ms')
+		if (range > 35)
+			this.now === 0 ? this.reset() : this.prev();
+		else if (range < -35)
+			this.now === this.$pages.length -1 ? this.reset() : this.next();
+		else
+			this.reset();
 	};
 
 	$.fn.viewpage = function (option) {
