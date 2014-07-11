@@ -39,7 +39,7 @@ void function ($) {
 	Viewpage.prototype._bind = function () {
 		var $pages = this.$pages;
 		$pages.on('touchstart', $.proxy(this._start, this));
-		$pages.on('touchmove', $.proxy(this._move, this);
+		$pages.on('touchmove', $.proxy(this._move, this));
 		$pages.on('touchend', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
