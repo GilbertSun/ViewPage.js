@@ -1,18 +1,21 @@
 void function ($) {
 	$.event.props.push('touches', 'changedTouches');
 
-	var Viewpage = function (ele, options) {
-		options = this.options = $.extend({}, Viewpage.DEFAULT, options);
-
+	var Viewpage = function (ele, option) {
+		var options = this.options = $.extend({}, Viewpage.DEFAULT, option);
 		this.$viewpage = $(ele);
 		this.$pages = this.$viewpage.find(options.pages);
-		this.now = options.initPage;
+		var now = this.now = options.initPage;
+		var activeClass = options.activeClass;
+		this.$pages.removeClass(activeClass)
+			.eq(now).addClass(activeClass);
 
 		this._bind();
 	};
 	Viewpage.DEFAULT = {
-		pages: '> .viewpage',
+		pages: '> *',
 		initPage: 0,
+		activeClass: 'active',
 		swipeRange: 35
 	};
 	Viewpage.prototype.prev = function () {

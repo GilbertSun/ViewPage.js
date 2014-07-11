@@ -1,0 +1,10 @@
+{
+	"browser": true,
+	"jquery": true,
+	"es3": true,
+	"quotmark": "single",
+	"trailing": true,
+	"undef": true,
+	"eqeqeq": true,
+	"expr": true
+}
