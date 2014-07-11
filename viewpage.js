@@ -1,7 +1,6 @@
 void function ($) {
 	$.event.props.push('touches', 'changedTouches');
 
-
 	var Viewpage = function (ele, options) {
 		options = this.options = $.extend({}, Viewpage.DEFAULT, options);
 
@@ -14,36 +13,41 @@ void function ($) {
 	Viewpage.DEFAULT = {
 		pages: '> .viewpage',
 		initPage: 0,
+		swipeRange: 35
 	};
 	Viewpage.prototype.prev = function () {
-		console.log('prev');
+		var now = this.now;
+		var prev = now - 1;
+
+		if (prev < 0) return;
+
+		this.now = prev;
+		var $pages = this.$pages;
+		var $nowPage = $pages.eq(now).removeClass('active');
+		var $next = $pages.eq(prev).removeClass('left').addClass('active');
 	};
 	Viewpage.prototype.next = function () {
-		console.log('next');
-	};
-	Viewpage.prototype.go = function () {
+		var now = this.now;
+		var next = now + 1;
 
-	};
-	Viewpage.prototype.recover = function () {
+		if (next > this.$pages.length - 1) return;
 
+		this.now = next;
+		var $pages = this.$pages;
+		var $nowPage = $pages.eq(now).addClass('left');
+		var $next = $pages.eq(next).addClass('active');
 	};
 	Viewpage.prototype._bind = function () {
 		var $pages = this.$pages;
 		$pages.on('touchstart', $.proxy(this._start, this));
-		$pages.on('touchmove', $.proxy(this._move, this));
 		$pages.on('touchend', $.proxy(this._end, this));
+		$pages.on('touchcancel', $.proxy(this._end, this));
 		$pages.on('touchcancel', $.proxy(this._end, this));
 	};
 
 	Viewpage.prototype._start = function (e) {
 		e = e.touches[0];
 		this.x = e.pageX;
-		console.log('start', e.pageX);
-	};
-	Viewpage.prototype._move = function (e) {
-		// e = e.touches[0];
-		// console.log('move', e.pageX - this.x);
-		// $(e.target).css('left', e.pageX - this.x);
 	};
 	Viewpage.prototype._end = function (e) {
 		e = e.changedTouches[0];
@@ -52,10 +56,7 @@ void function ($) {
 			this.prev();
 		else if (this.range < -35)
 			this.next();
-		else
-			this.recover();
 	};
-
 
 	$.fn.viewpage = function (option) {
 		return this.each(function () {

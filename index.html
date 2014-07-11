@@ -25,21 +25,41 @@
 			height: 100%;
 			position: absolute;
 			left: 100%;
-			background: yellow;
+
+			-webkit-transition: left .5s;
+			-o-transition: left .5s;
+			transition: left .5s;
+		}
+		.page1 {
+			background: #aaa;
+		}
+		.page2 {
+			background: #bbb;
+		}
+		.page3 {
+			background: #ccc;
+		}
+		.page4 {
+			background: #ddd;
+		}
+		.page5 {
+			background: #eee;
 		}
 		.viewpage.active {
 			left: 0;
-			background: red;
+		}
+		.viewpage.left {
+			left: -100%;
 		}
 	</style>
 </head>
 <body>
 	<div class="viewpage-container">
-		<div class="viewpage active">hnjfdewkfkj1</div>
-		<div class="viewpage">hnjfdewkfkj2</div>
-		<div class="viewpage">hnjfdewkfkj3</div>
-		<div class="viewpage">hnjfdewkfkj4</div>
-		<div class="viewpage">hnjfdewkfkj5</div>
+		<div class="viewpage page1 active">hnjfdewkfkj1</div>
+		<div class="viewpage page2">hnjfdewkfkj2</div>
+		<div class="viewpage page3">hnjfdewkfkj3</div>
+		<div class="viewpage page4">hnjfdewkfkj4</div>
+		<div class="viewpage page5">hnjfdewkfkj5</div>
 	</div>
 	<script src="./lib/jquery.js"></script>
 	<script src="./viewpage.js"></script>
