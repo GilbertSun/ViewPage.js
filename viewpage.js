@@ -1,5 +1,6 @@
 /**
- * @author GilbertSun <szb4321@gmail.com>
+ * @author  GilbertSun <szb4321@gmail.com>
+ * @url     https://github.com/GilbertSun/ViewPage.js
  * @version 0.0.1
  */
 
