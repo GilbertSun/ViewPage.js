@@ -8,6 +8,7 @@ void function ($) {
 	$.event.props.push('touches', 'changedTouches');
 
 	var Viewpage = function (ele, option) {
+		var _this = this;
 		var options = this.options = $.extend({}, Viewpage.DEFAULT, option);
 		var $viewpage = this.$viewpage = $(ele);
 		var $container = this.$container = $(options.container, $viewpage);
@@ -18,6 +19,9 @@ void function ($) {
 		this._setWidth(options.width);
 		this._initStyle();
 		this._bindEvent();
+		setTimeout(function () {
+			_this.go(_this.now);
+		}, 0);
 	};
 	Viewpage.DEFAULT = {
 		width: '100%', // 1. percentage string 2. number > 0
@@ -55,9 +59,14 @@ void function ($) {
 	Viewpage.prototype.reset = function () {
 		this.go(this.now);
 	};
-	Viewpage.prototype.go = function (index, withoutAnimation) {
+	Viewpage.prototype.go = function (index) {
 		var activeClass = this.options.activeClass;
+		var e = $.Event('change.viewpage', {
+			pages: this.$pages,
+			page: this.$pages.eq(index)
+		});
 		this.now = index;
+		this.$viewpage.trigger(e);
 		this.$container.css('transform', 'translate(-' + index * this.width + 'px)')
 
 	};
@@ -77,7 +86,7 @@ void function ($) {
 	Viewpage.prototype._move = function	(e) {
 		e = e.touches[0];
 		var range = this.startX - e.pageX;
-		this.$container.css('transform', 'translate(-' + (this.now * this.width + range) + 'px)');
+		this.$container.css('transform', 'translate(' + (this.now * this.width + range)*-1 + 'px)');
 		return false;
 	};
 	Viewpage.prototype._end = function (e) {
