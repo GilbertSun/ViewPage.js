@@ -29,7 +29,8 @@ void function ($) {
 		activeClass: 'active',
 		container: '.viewpage-container',
 		pages: '> *',
-		swipeRange: 35
+		swipeRange: 35,
+		duration: 300
 	};
 	Viewpage.prototype._setWidth = function(width) {
 		if (typeof width === 'string' && /%$/.test(width)) {
@@ -63,12 +64,14 @@ void function ($) {
 		var activeClass = this.options.activeClass;
 		var e = $.Event('change.viewpage', {
 			pages: this.$pages,
-			page: this.$pages.eq(index)
+			page: this.$pages.eq(index),
+			index: index
 		});
+		(index === 0) && (e.isFirst = true);
+		(index === this.$pages.length - 1) && (e.isLast = true);
 		this.now = index;
 		this.$viewpage.trigger(e);
-		this.$container.css('transform', 'translate(-' + index * this.width + 'px)')
-
+		this.$container.css('transform', 'translate(-' + index * this.width + 'px)');
 	};
 	Viewpage.prototype._bindEvent = function () {
 		this.$viewpage
@@ -92,7 +95,7 @@ void function ($) {
 	Viewpage.prototype._end = function (e) {
 		e = e.changedTouches[0];
 		var range = e.pageX - this.startX;
-		this.$container.css('transition', '300ms')
+		this.$container.css('transition', this.options.duration + 'ms');
 		if (range > 35)
 			this.now === 0 ? this.reset() : this.prev();
 		else if (range < -35)
