@@ -1,5 +1,6 @@
 /**
  * @author GilbertSun <szb4321@gmail.com>
+ * @version 0.0.1
  */
 
 void function ($) {
