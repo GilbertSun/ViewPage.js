@@ -26,7 +26,6 @@ void function ($) {
 	Viewpage.DEFAULT = {
 		width: '100%', // 1. percentage string 2. number > 0
 		initPage: 0,
-		activeClass: 'active',
 		container: '.viewpage-container',
 		pages: '> *',
 		swipeRange: 35,
@@ -58,10 +57,9 @@ void function ($) {
 		this.go(now + 1);
 	};
 	Viewpage.prototype.reset = function () {
-		this.go(this.now);
+		this.$container.css('transform', 'translate(-' + this.now * this.width + 'px)');
 	};
 	Viewpage.prototype.go = function (index) {
-		var activeClass = this.options.activeClass;
 		var e = $.Event('change.viewpage', {
 			pages: this.$pages,
 			page: this.$pages.eq(index),
@@ -69,8 +67,12 @@ void function ($) {
 		});
 		(index === 0) && (e.isFirst = true);
 		(index === this.$pages.length - 1) && (e.isLast = true);
-		this.now = index;
 		this.$viewpage.trigger(e);
+		if (e.isDefaultPrevented()) {
+			this.reset();
+			return;
+		}
+		this.now = index;
 		this.$container.css('transform', 'translate(-' + index * this.width + 'px)');
 	};
 	Viewpage.prototype._bindEvent = function () {
