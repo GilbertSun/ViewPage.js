@@ -1,7 +1,7 @@
 /**
  * @author  GilbertSun <szb4321@gmail.com>
  * @url     https://github.com/GilbertSun/ViewPage.js
- * @version 0.0.1
+ * @version 0.0.2
  */
 
 void function ($) {
@@ -75,7 +75,7 @@ void function ($) {
 			return;
 		}
 		this.now = index;
-		this.$container.css('transform', 'translate(-' + index * this.width + 'px)');
+		this.$container.css('transform', 'translate3d(-' + index * this.width + 'px, 0px, 0px)');
 	};
 	Viewpage.prototype._bindEvent = function () {
 		this.$viewpage
@@ -93,7 +93,7 @@ void function ($) {
 	Viewpage.prototype._move = function	(e) {
 		e = e.touches[0];
 		var range = this.startX - e.pageX;
-		this.$container.css('transform', 'translate(' + (this.now * this.width + range)*-1 + 'px)');
+		this.$container.css('transform', 'translate3d(' + (this.now * this.width + range)*-1 + 'px, 0px, 0px)');
 		return false;
 	};
 	Viewpage.prototype._end = function (e) {
