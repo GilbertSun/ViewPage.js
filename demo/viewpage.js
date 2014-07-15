@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta content="width=device-width, initial-scale=1.0, user-scalable=0" name="viewport">
-	<title>ViewPage.js demo</title>
+	<title>ViewPage.js demo for Viewpage</title>
 	<style>
 		* {
 			margin: 0;
@@ -61,8 +61,8 @@
 		</ul>
 	</div>
 
-	<script src="./lib/jquery.js"></script>
-	<script src="./viewpage.js"></script>
+	<script src="../lib/jquery.js"></script>
+	<script src="../viewpage.js"></script>
 	<script>
 		$('.viewpage').viewpage();
 	</script>
