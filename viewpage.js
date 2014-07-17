@@ -16,6 +16,12 @@ void function ($) {
 		var $container = this.$container = $(options.container, $viewpage);
 		var $pages = this.$pages = $(options.pages, $container);
 
+		if (typeof options.offOverscroll === 'boolean') {
+			options.offOverscroll = {
+				start: options.offOverscroll,
+				end: options.offOverscroll
+			};
+		}
 		this.now = options.initPage;
 		this.x = 0;
 		this._setWidth(options.width);
@@ -31,7 +37,8 @@ void function ($) {
 		container: '.viewpage-container',
 		pages: '> *',
 		swipeRange: 35,
-		duration: 300
+		duration: 300,
+		offOverscroll: false // when true trun off overscroll also can be {start: true, end: true}
 	};
 	Viewpage.prototype._setWidth = function(width) {
 		if (typeof width === 'string' && /%$/.test(width)) {
@@ -89,10 +96,20 @@ void function ($) {
 		e = e.touches[0];
 		this.$container.css('transition', '0ms');
 		this.startX = e.pageX;
+		return false;
 	};
 	Viewpage.prototype._move = function	(e) {
 		e = e.touches[0];
 		var range = this.startX - e.pageX;
+		if (this.now === 0 && range < 0) {
+			this._overscroll(range, 'start');
+			return false;
+		}
+		if (this.now === this.$pages.length - 1 && range > 0) {
+			this._overscroll(range, 'end');
+			return false;
+		}
+
 		this.$container.css('transform', 'translate3d(' + (this.now * this.width + range)*-1 + 'px, 0px, 0px)');
 		return false;
 	};
@@ -107,14 +124,28 @@ void function ($) {
 		else
 			this.reset();
 	};
+	Viewpage.prototype._overscroll = function (range ,direction) {
+		var evt = $.Event('overscroll.viewpage', {
+			direction: direction
+		});
+		if (direction === 'start' && !this.options.offOverscroll.start) {
+			this.$container.css('transform', 'translate3d(' + (range / 2)*-1 + 'px, 0px, 0px)');
+		}
+		if (direction === 'end' && !this.options.offOverscroll.end) {
+			this.$container.css('transform', 'translate3d(' + (this.now * this.width + range / 2)*-1 + 'px, 0px, 0px)');
+		}
+		this.$viewpage.trigger(evt);
+	};
 
 	$.fn.viewpage = function (option) {
+		var _arguments = arguments;
 		return this.each(function () {
 			var $this = $(this);
 			var data = $this.data('qbt.viewpage');
 			var options = typeof option === 'object' && option;
 
 			if (!data) $this.data('qbt.viewpage', (data = new Viewpage(this, options)));
+			if (typeof option === 'string') data[option].apply(data, [].slice.call(_arguments, 1));
 		});
 	};
 }(jQuery);
