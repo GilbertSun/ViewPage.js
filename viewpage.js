@@ -96,7 +96,6 @@ void function ($) {
 		e = e.touches[0];
 		this.$container.css('transition', '0ms');
 		this.startX = e.pageX;
-		return false;
 	};
 	Viewpage.prototype._move = function	(e) {
 		e = e.touches[0];
