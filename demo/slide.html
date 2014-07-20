@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ViewPage.js demo for slides</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.viewpage {
+			width: 350px;
+			overflow: hidden;
+			margin: auto;
+			margin-top: 20px;
+		}
+		.viewpage-container {
+			width: 1400px;
+		}
+		.viewpage-container:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		.viewpage-container li {
+			width: 350px;
+			height: 150px;
+			float: left;
+			list-style: none;
+		}
+		.slide1 {
+			background: #001f3f;
+		}
+		.slide2 {
+			background: #0074d9;
+		}
+		.slide3 {
+			background: #7fdbff;
+		}
+		.slide4 {
+			background: #39cccc;
+		}
+	</style>
+</head>
+<body>
+	<div class="viewpage">
+		<ul class="viewpage-container">
+			<li class="slide1"></li>
+			<li class="slide2"></li>
+			<li class="slide3"></li>
+			<li class="slide4"></li>
+		</ul>
+	</div>
+	<script src="../lib/jquery.js"></script>
+	<script src="../viewpage.js"></script>
+	<script>
+		$(function () {
+			console.log('slide demo');
+		});
+	</script>
+</body>
+</html>
